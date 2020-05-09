@@ -48,10 +48,10 @@ bool PreSonneDa = false;
 #define HOSTNAME "ntp2neo7"
 
 //WiFi
-const char* ssid     = "orange";
-const char* password = "w!r messen 1000 Werte";
-//const char* ssid     = "smuldom";
-//const char* password = "dresdener str 33a";
+const char* ssid     = "*****";
+const char* password = "******";
+
+
 IPAddress ipno;
 
 int Volt = 0;
