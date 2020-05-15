@@ -30,7 +30,7 @@ Adafruit_NeoPixel background = Adafruit_NeoPixel(NO_OF_LEDS, 99, NEO_GRB + NEO_K
 
 #define LED_MIN 127
 #define LED_MAX 256
-long firstPixelHue = 0;
+uint32_t firstPixelHue = 0;
 uint32_t EffektNow = 0;
 
 // Sonne
@@ -48,10 +48,10 @@ bool PreSonneDa = false;
 #define HOSTNAME "ntp2neo7"
 
 //WiFi
-const char* ssid     = "*****";
-const char* password = "******";
-
-
+const char* ssid     = "orange";
+const char* password = "w!r messen 1000 Werte";
+//const char* ssid     = "smuldom";
+//const char* password = "dresdener str 33a";
 IPAddress ipno;
 
 int Volt = 0;
@@ -69,7 +69,7 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "de.pool.ntp.org", 0, 60000);
 //NTPClient timeClient(ntpUDP, "192.168.2.1", 0, 60000);
 #define SYNC_TIME 1800
-#define SWITCH_TIME 60  //jede SWITCH_TIME sec. die Anmation wechseln
+#define SWITCH_TIME 300  //jede SWITCH_TIME sec. die Anmation wechseln
 #define BACKGROUND_NO 4 //Anzahl der Animationen
 
 long int getNTPTime(void);
@@ -100,6 +100,7 @@ bool dotBlink = true;
 
 void PutOLED(int x, int y, char* Text);
 void PrintOLED(time_t TimeToPrint);
+void rainbow(void);
 
 void setup()
 {
@@ -109,6 +110,8 @@ void setup()
   pixels.begin();
   pixels.show();
   pixels.setBrightness(64);
+  background.begin();
+  background.show();
   background.setBrightness(255);
 
   Serial.println();
@@ -163,7 +166,7 @@ void setup()
   DisplayTime = now();
   PrintFormattedTime(now());
   OLEDFormattedTime(now());
-  showTime(now());
+  //showTime(now());
   lastPrint = DisplayTime;
 
   LastReset = now();
@@ -197,6 +200,7 @@ void loop() {
     BackgroundSwitch++;
     if (BackgroundSwitch >= BACKGROUND_NO)
       BackgroundSwitch = 0;
+    BackgroundSwitch = 1; // Mal sehen, ob die Umschaltung schuld ist.
   }
 
   switch (second(now())) {
@@ -220,6 +224,10 @@ void loop() {
       break;
   }
 
+  /*if ((hour(now()) == 3) && (minute(now()) == 3) && (second(now()) == 3)) {
+    ESP.reset();
+  }*/
+
   if (LastMinute != minute(now())) {
     PrintFormattedTime(now());
     DisplayTime = now();
@@ -231,12 +239,10 @@ void loop() {
     LastSecond = second(now());
     dotBlink = true;
     showTime(now());
-    //Serial.print("Free Heap ist ");
-    //Serial.println(system_get_free_heap_size());
   }
 
   if ((millis() - EffektNow) >= 50) {
-    rainbow(10);
+    rainbow();
     EffektNow = millis();
   }
 

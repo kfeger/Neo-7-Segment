@@ -57,8 +57,7 @@ void sevenSegment(int pos, int val)
 
 void showTime(time_t t)
 {
-  if (t != last_t)
-  {
+  if (t != last_t) {
     last_t = t;
     int h = hour(t);
     if (h >= 10)
@@ -83,6 +82,18 @@ void showTime(time_t t)
       rgb[28] = pixels.Color(rgb_r, rgb_g, rgb_b);
       rgb[29] = pixels.Color(rgb_r, rgb_g, rgb_b);
     }
+    /*
+    if (SonneDa)
+      pixels.setBrightness(96);
+    else
+      pixels.setBrightness(6);
+
+    for (int i = 0; i < pixels.numPixels(); i++) {
+      pixels.setPixelColor(i, rgb[i]);
+      yield();
+    }
+    pixels.show(); // Update strip with new contents
+    */
   }
 }
 
@@ -93,33 +104,37 @@ uint8_t v_0_255(int v)
   return v;
 }
 
-// Rainbow cycle along whole strip. "wait" delay time between frames.
-void rainbow(int wait) {  // siehe Adafruit strandtest
+// Rainbow cycle along whole strip.
+void rainbow(void) {  // siehe Adafruit strandtest
   uint32_t TempColor;
   switch (BackgroundSwitch) {
     case 0:
     default:  // normaler Regenbogen
       for (int i = 0; i < background.numPixels(); i++) { // For each pixel in strip...
-        int pixelHue = firstPixelHue + (i * 65536L / background.numPixels());
+        uint32_t pixelHue = firstPixelHue + (i * 65536L / background.numPixels());
         background.setPixelColor(i, background.gamma32(background.ColorHSV(pixelHue)));
+        yield();
       }
       break;
     case 1: // Regenbogen, aber einfarbig für alle Digits
       TempColor = background.gamma32(background.ColorHSV(firstPixelHue + (65536L / background.numPixels())));
       for (int i = 0; i < background.numPixels(); i++) { // For each pixel in strip...
         background.setPixelColor(i, TempColor);
+        yield();
       }
       break;
     case 2: // Umsortierter Regenbogne, streifenweise
       for (int i = 0; i < background.numPixels(); i++) { // For each pixel in strip...
-        int pixelHue = firstPixelHue + (TransStripe[i] * 65536L / background.numPixels());
+        uint32_t pixelHue = firstPixelHue + (TransStripe[i] * 65536L / background.numPixels());
         background.setPixelColor(i, background.gamma32(background.ColorHSV(pixelHue)));
+        yield();
       }
       break;
     case 3:// Umsortierter Regenbogne, per Digit
       for (int i = 0; i < background.numPixels(); i++) { // For each pixel in strip...
-        int pixelHue = firstPixelHue + (TransDigit[i] * 65536L / background.numPixels());
+        uint32_t pixelHue = firstPixelHue + (TransDigit[i] * 65536L / background.numPixels());
         background.setPixelColor(i, background.gamma32(background.ColorHSV(pixelHue)));
+        yield();
       }
       break;
   }
@@ -131,14 +146,14 @@ void rainbow(int wait) {  // siehe Adafruit strandtest
 
   for (int i = 0; i < pixels.numPixels(); i++) {
     pixels.setPixelColor(i, background.getPixelColor(i) & rgb[i]);
+    yield();
   }
   yield();
   pixels.show(); // Update strip with new contents
+  yield();
   firstPixelHue += 256;
   if (firstPixelHue >= 1 * 65536)
     firstPixelHue = 0;
-  //delay(wait);  // Pause for a moment
-  //}
 }
 
 void MakeBackground (void) {
