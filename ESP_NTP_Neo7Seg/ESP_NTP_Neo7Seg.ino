@@ -69,8 +69,8 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "de.pool.ntp.org", 0, 60000);
 //NTPClient timeClient(ntpUDP, "192.168.2.1", 0, 60000);
 #define SYNC_TIME 1800
-#define SWITCH_TIME 300  //jede SWITCH_TIME sec. die Anmation wechseln
-#define BACKGROUND_NO 4 //Anzahl der Animationen
+#define SWITCH_TIME 123  //jede SWITCH_TIME sec. die Anmation wechseln
+#define BACKGROUND_NO 10 //Anzahl der Animationen
 
 long int getNTPTime(void);
 void printNumber(byte Number);
@@ -88,7 +88,7 @@ bool SayWaitOnce = false;
 byte NTPMinute = 99;
 char FloatString[30];
 char OLEDString[26] ;
-int rc, ShowSwitch = 0, BackgroundSwitch = 0;
+int rc, ShowSwitch = 0, BackgroundSwitch = 8;
 long lastReconnectAttempt = 0;
 long StartTime = 0;
 
@@ -173,6 +173,7 @@ void setup()
   delay(200);
   //LEDTest();
   NextSwitch = now();
+  randomSeed(now());
 }
 
 void loop() {
@@ -197,10 +198,10 @@ void loop() {
 
   if ((now() - NextSwitch) >= SWITCH_TIME) {  // Zeit, die Animation zu wechseln
     NextSwitch = now();
-    BackgroundSwitch++;
+    /*BackgroundSwitch++;
     if (BackgroundSwitch >= BACKGROUND_NO)
-      BackgroundSwitch = 0;
-    BackgroundSwitch = 1; // Mal sehen, ob die Umschaltung schuld ist.
+      BackgroundSwitch = 0;*/
+    BackgroundSwitch = random(0, BACKGROUND_NO);
   }
 
   switch (second(now())) {

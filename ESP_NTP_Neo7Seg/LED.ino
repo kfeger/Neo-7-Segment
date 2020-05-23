@@ -83,16 +83,16 @@ void showTime(time_t t)
       rgb[29] = pixels.Color(rgb_r, rgb_g, rgb_b);
     }
     /*
-    if (SonneDa)
+      if (SonneDa)
       pixels.setBrightness(96);
-    else
+      else
       pixels.setBrightness(6);
 
-    for (int i = 0; i < pixels.numPixels(); i++) {
+      for (int i = 0; i < pixels.numPixels(); i++) {
       pixels.setPixelColor(i, rgb[i]);
       yield();
-    }
-    pixels.show(); // Update strip with new contents
+      }
+      pixels.show(); // Update strip with new contents
     */
   }
 }
@@ -106,39 +106,99 @@ uint8_t v_0_255(int v)
 
 // Rainbow cycle along whole strip.
 void rainbow(void) {  // siehe Adafruit strandtest
-  uint32_t TempColor;
+  uint32_t TempColor, pixelHue;
   switch (BackgroundSwitch) {
     case 0:
     default:  // normaler Regenbogen
-      for (int i = 0; i < background.numPixels(); i++) { // For each pixel in strip...
-        uint32_t pixelHue = firstPixelHue + (i * 65536L / background.numPixels());
-        background.setPixelColor(i, background.gamma32(background.ColorHSV(pixelHue)));
-        yield();
+      for (int i = 0; i < NO_OF_LEDS; i++) { // For each pixel in strip...
+        pixelHue = firstPixelHue + (i * 65536L / NO_OF_LEDS);
+        //background.setPixelColor(i, background.gamma32(background.ColorHSV(pixelHue)));
+        background.setPixelColor(i, background.ColorHSV(pixelHue));
       }
       break;
     case 1: // Regenbogen, aber einfarbig für alle Digits
-      TempColor = background.gamma32(background.ColorHSV(firstPixelHue + (65536L / background.numPixels())));
-      for (int i = 0; i < background.numPixels(); i++) { // For each pixel in strip...
+      //TempColor = background.gamma32(background.ColorHSV(firstPixelHue + (65536L / NO_OF_LEDS)));
+      TempColor = background.ColorHSV(firstPixelHue + (65536L / NO_OF_LEDS));
+      for (int i = 0; i < NO_OF_LEDS; i++) { // For each pixel in strip...
         background.setPixelColor(i, TempColor);
-        yield();
       }
       break;
     case 2: // Umsortierter Regenbogne, streifenweise
-      for (int i = 0; i < background.numPixels(); i++) { // For each pixel in strip...
-        uint32_t pixelHue = firstPixelHue + (TransStripe[i] * 65536L / background.numPixels());
-        background.setPixelColor(i, background.gamma32(background.ColorHSV(pixelHue)));
-        yield();
+      for (int i = 0; i < NO_OF_LEDS; i++) { // For each pixel in strip...
+        pixelHue = firstPixelHue + (TransStripe[i] * 65536L / NO_OF_LEDS);
+        //background.setPixelColor(i, background.gamma32(background.ColorHSV(pixelHue)));
+        background.setPixelColor(i, background.ColorHSV(pixelHue));
       }
       break;
     case 3:// Umsortierter Regenbogne, per Digit
-      for (int i = 0; i < background.numPixels(); i++) { // For each pixel in strip...
-        uint32_t pixelHue = firstPixelHue + (TransDigit[i] * 65536L / background.numPixels());
-        background.setPixelColor(i, background.gamma32(background.ColorHSV(pixelHue)));
-        yield();
+      for (int i = 0; i < NO_OF_LEDS; i++) { // For each pixel in strip...
+        pixelHue = firstPixelHue + (TransDigit[i] * 65536L / NO_OF_LEDS);
+        //background.setPixelColor(i, background.gamma32(background.ColorHSV(pixelHue)));
+        background.setPixelColor(i, background.ColorHSV(pixelHue));
       }
       break;
+    case 4:
+      for (int i = 0; i < NO_OF_LEDS; i++) { // For each pixel in strip...
+        pixelHue = firstPixelHue + (i * 65536L / NO_OF_LEDS);
+        background.setPixelColor(i, background.ColorHSV(pixelHue));
+      }
+      TempColor = background.ColorHSV(pixelHue);
+      Fill(10, TempColor);
+      Fill(100, TempColor);
+      Fill(1000, TempColor);
+      break;
+    case 5:
+      for (int i = 0; i < NO_OF_LEDS; i++) { // For each pixel in strip...
+        pixelHue = firstPixelHue + (i * 65536L / NO_OF_LEDS);
+        background.setPixelColor(i, background.ColorHSV(pixelHue));
+      }
+      TempColor = background.ColorHSV(pixelHue);
+      Fill(1, TempColor);
+      Fill(100, TempColor);
+      Fill(1000, TempColor);
+      break;
+    case 6:
+      for (int i = 0; i < NO_OF_LEDS; i++) { // For each pixel in strip...
+        pixelHue = firstPixelHue + (i * 65536L / NO_OF_LEDS);
+        background.setPixelColor(i, background.ColorHSV(pixelHue));
+      }
+      TempColor = background.ColorHSV(pixelHue);
+      Fill(1, TempColor);
+      Fill(10, TempColor);
+      Fill(1000, TempColor);
+      break;
+    case 7:
+      for (int i = 0; i < NO_OF_LEDS; i++) { // For each pixel in strip...
+        pixelHue = firstPixelHue + (i * 65536L / NO_OF_LEDS);
+        background.setPixelColor(i, background.ColorHSV(pixelHue));
+      }
+      TempColor = background.ColorHSV(pixelHue);
+      Fill(1, TempColor);
+      Fill(10, TempColor);
+      Fill(100, TempColor);
+      break;
+    case 8:
+      for (int i = 0; i < NO_OF_LEDS; i++) { // For each pixel in strip...
+        pixelHue = firstPixelHue + (i * 65536L / NO_OF_LEDS);
+        background.setPixelColor(i, background.ColorHSV(pixelHue));
+      }
+      TempColor = background.ColorHSV(pixelHue);
+      Fill(1, TempColor);
+      Fill(1000, TempColor);
+      Fill(99, 0xffffff);
+      break;
+    case 9:
+      for (int i = 0; i < NO_OF_LEDS; i++) { // For each pixel in strip...
+        pixelHue = firstPixelHue + (i * 65536L / NO_OF_LEDS);
+        background.setPixelColor(i, background.ColorHSV(pixelHue));
+      }
+      TempColor = background.ColorHSV(pixelHue);
+      Fill(10, TempColor);
+      Fill(100, TempColor);
+      Fill(99, 0xffffff);
+      break;
   }
-  yield();
+  
   if (SonneDa)
     pixels.setBrightness(96);
   else
@@ -146,16 +206,40 @@ void rainbow(void) {  // siehe Adafruit strandtest
 
   for (int i = 0; i < pixels.numPixels(); i++) {
     pixels.setPixelColor(i, background.getPixelColor(i) & rgb[i]);
-    yield();
   }
-  yield();
   pixels.show(); // Update strip with new contents
-  yield();
   firstPixelHue += 256;
   if (firstPixelHue >= 1 * 65536)
     firstPixelHue = 0;
 }
 
-void MakeBackground (void) {
-
+void Fill(int Digit, uint32_t FillColor) {
+  switch (Digit) {
+    case 1:
+      for ( int i = 0; i < 14; i++) {
+        background.setPixelColor(i, FillColor);
+      }
+      break;
+    case 10:
+      for ( int i = 14; i < 28; i++) {
+        background.setPixelColor(i, FillColor);
+      }
+      break;
+    case 100:
+      for ( int i = 30; i < 44; i++) {
+        background.setPixelColor(i, FillColor);
+      }
+      break;
+    case 1000:
+      for ( int i = 44; i < 58; i++) {
+        background.setPixelColor(i, FillColor);
+      }
+      break;
+    case 99:
+      background.setPixelColor(28, FillColor);
+      background.setPixelColor(29, FillColor);
+      break;
+    default:
+      break;
+  }
 }
